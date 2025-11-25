@@ -13,7 +13,18 @@ function Homepage() {
         text-white
       "
     >
-      
+      <h1 
+      className='
+      absolute top-3 left-6
+      px-6 py-3 
+      text-white
+      text-3xl
+      font-semibold
+      font-DynaPuff
+      '
+      >
+        CraftNest
+      </h1>
       <button
         className="
           absolute top-3 right-6
@@ -27,7 +38,7 @@ function Homepage() {
       </button>
 
       <div className="relative z-10 text-center space-y-4">
-        <h1 className="text-4xl md:text-6xl font-bold">
+        <h1 className="text-4xl md:text-6xl font-bold font-Tiktok">
           Welcome to CraftNest
         </h1>
 
