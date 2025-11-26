@@ -1,5 +1,6 @@
 import React from 'react';
 import Services from './services';
+import TopRatedFreelancers from './TopRatedFreelancers';
 function Homepage() {
   return (
     <>
@@ -58,7 +59,9 @@ function Homepage() {
         </button>
       </div>
     </div>
+
     <Services/>
+    
     </>
   );
 }
