@@ -1,9 +1,13 @@
 import React from 'react';
 import Services from './services';
 import TopRatedFreelancers from './TopRatedFreelancers';
+import WorkGuide from './WorkGuide';
+import Footer from './Footer';
+import Navbar from './Navbar';
 function Homepage() {
   return (
     <>
+    <Navbar/>
     <div
       className="
         relative
@@ -14,29 +18,8 @@ function Homepage() {
         text-white
       "
     >
-      <h1 
-      className='
-      absolute top-3 left-6
-      px-6 py-3 
-      text-white
-      text-3xl
-      font-semibold
-      font-DynaPuff
-      '
-      >
-        CraftNest
-      </h1>
-      <button
-        className="
-          absolute top-3 right-6
-          px-6 py-3 
-          bg-emerald-500 text-white font-bold 
-          rounded-lg 
-          hover:bg-emerald-600 transition
-        "
-      >
-        Login
-      </button>
+      
+      
 
       <div className="relative z-10 text-center space-y-4">
         <h1 className="text-4xl md:text-6xl font-bold font-Tiktok">
@@ -61,7 +44,9 @@ function Homepage() {
     </div>
 
     <Services/>
-    
+    <TopRatedFreelancers/>
+    <WorkGuide/>
+    <Footer/>
     </>
   );
 }
