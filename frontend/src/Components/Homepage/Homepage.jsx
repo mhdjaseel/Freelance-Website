@@ -1,10 +1,16 @@
 import React from 'react';
+
 import Services from './services';
 import TopRatedFreelancers from './TopRatedFreelancers';
 import WorkGuide from './WorkGuide';
 import Footer from './Footer';
 import Navbar from './Navbar';
+import { useNavigate } from 'react-router-dom';
 function Homepage() {
+  const navigate = useNavigate()
+  const HandleClick = () =>{
+      navigate('/Signup')
+  }
   return (
     <>
     <Navbar/>
@@ -37,6 +43,7 @@ function Homepage() {
             rounded-lg 
             hover:bg-emerald-600 transition
           "
+          onClick={HandleClick}
         >
           Get Started
         </button>

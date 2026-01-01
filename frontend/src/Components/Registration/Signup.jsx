@@ -3,46 +3,49 @@ import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [image, setImage] = useState(null);
-  const [Error, setError] = useState('');
-  const navigate = useNavigate()
+  const [Error, setError] = useState("");
+  const navigate = useNavigate();
   const [Details, setDetails] = useState({
-    'fname':'',
-    'email':'',
-    'password':'',
-    'cpassword':'',
-    'phone_num':'',
-    'country':'',
+    fname: "",
+    email: "",
+    password: "",
+    cpassword: "",
+    phone_num: "",
+    country: "",
   });
 
-  const HandleChange = (e) =>{
-    const {name,value} = e.target;
-    setDetails(prev =>{
-      const updated ={
+  const HandleChange = (e) => {
+    const { name, value } = e.target;
+    setDetails((prev) => {
+      const updated = {
         ...prev,
-        [name]:value
-      } 
-      if (updated.password && updated.cpassword && updated.password !== updated.cpassword) {
-        setError('Password must be same')
+        [name]: value,
+      };
+      if (
+        updated.password &&
+        updated.cpassword &&
+        updated.password !== updated.cpassword
+      ) {
+        setError("Password must be same");
       } else {
-        setError('')
-      }  
+        setError("");
+      }
       return updated;
-    })    
-  }
+    });
+  };
 
-  const HandleSubmit =(e)=>{
+  const HandleSubmit = (e) => {
     e.preventDefault();
     if (Details.password !== Details.cpassword) {
-      setError('Password must be same')
+      setError("Password must be same");
     } else {
-      setError('')
-      navigate('/ClientRegistration')
-      console.log(Details)
+      setError("");
+      navigate("/UserRole");
+      console.log(Details);
     }
-  }
+  };
 
-  useEffect(() => {
-  }, [Error]);
+  useEffect(() => {}, [Error]);
 
   return (
     <>
@@ -115,11 +118,14 @@ function Signup() {
                 >
                   Sign Up
                 </button>
-              </div>
 
+                
+              </div>
             </div>
           </div>
+          
         </form>
+        
       </div>
     </>
   );

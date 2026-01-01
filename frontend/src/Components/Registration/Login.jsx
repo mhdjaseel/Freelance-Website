@@ -21,7 +21,6 @@ function Login() {
   useEffect(() => {
     
     
-    console.log('asd')
 
   }, []);
   return (
@@ -80,9 +79,9 @@ function Login() {
               Sign In
             </button>
           </form>
-          <p className="text-emerald-400 font-Tiktok mt-2 hover:text-emerald-300">
+          <p className="text-emerald-400 font-Tiktok mt-2 ">
             Doesn't Have Account ?{" "}
-            <span onClick={HandleClick} className="underline cursor-pointer">
+            <span onClick={HandleClick} className="underline cursor-pointer hover:text-emerald-300">
               Signup
             </span>
           </p>
