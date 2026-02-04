@@ -13,18 +13,23 @@ import FreelancerDashboard from "./Components/Freelancer/FreelancerDashboard";
 import ClientPageLayout from "./Components/Clients/ClientPageLayout";
 import FreelancerPageLayout from "./Components/Freelancer/FreelancerPageLayout";
 import Joblist from "./Components/Freelancer/Jobs/Joblist";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 function App() {
   return (
-    <>
+    <><GoogleOAuthProvider clientId="446900104176-0gq84dr63ueem055jtqbhaap4qcfmgim.apps.googleusercontent.com">
       <Router>
         <Routes>
 
-          {/* Common Pages */}
-
-          <Route path="/" element={<Homepage />} />
+          {/* GoogleProvider Pages */}
+          
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Login" element={<Login />} /> 
+           <Route path="/" element={<Homepage />} />
           <Route path="/UserRole" element={<UserRole />} />
+        
+        
+          {/* Common Pages */}
+         
    
           {/* Freelancer Pages */}
           <Route element={<FreelancerPageLayout/>}>
@@ -43,6 +48,8 @@ function App() {
 
         </Routes>
       </Router>
+          </GoogleOAuthProvider>
+
     </>
   );
 }

@@ -14,6 +14,7 @@ function Login() {
     e.preventDefault();
     console.log(Email)
     console.log(Password)
+    navigate("/ClientDashboard");
 
     
   };

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'clients',
     'freelancers',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'craftnest',
+        'NAME': 'freelance_platform',
         'USER':'root',
         'PORT':3306,
         'HOST':'localhost',
@@ -131,3 +132,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# JWT Settings
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
+
+# Google OAuth Settings
+GOOGLE_OAUTH_CLIENT_ID = '446900104176-0gq84dr63ueem055jtqbhaap4qcfmgim.apps.googleusercontent.com'
+
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
