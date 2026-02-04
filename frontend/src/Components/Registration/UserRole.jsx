@@ -1,16 +1,37 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate,useLocation } from 'react-router-dom';
 
 function UserRole() {
-     const [Role, setRole] = useState('');
+ 
     const navigate = useNavigate()
     const location = useLocation();
-  const  {Details}  = location.state || {};
+  const details = location.state?.Details;
 
   const HandleRole = async (role) =>{
-    setRole(role)
-    console.log(Details)
-
+     try {
+      const updatedData = {
+      role: role,
+      email: details?.user?.email
+    };
+    const token = localStorage.getItem('access_token')
+    const response = await axios.post('http://localhost:8000/api/AssignRole/', updatedData,{
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${token}`
+      }
+    })
+    console.log(response.data)
+    if (role === 'client') {
+      navigate('/ClientDashboard')
+    }
+    else{
+      navigate('/FreelancerDashboard')
+    }
+     }
+     catch(error){
+      console.log(error?.response?.data)
+     }
     
       
   }

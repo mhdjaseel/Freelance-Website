@@ -31,7 +31,11 @@ function Signup() {
         }
       })
       console.log(Details);
-      navigate("/UserRole");
+      const data = response.data
+      console.log(data);
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+      navigate("/UserRole",{state:{Details:data}});
     }
     catch (err) {
       setError(err?.response?.data?.message);

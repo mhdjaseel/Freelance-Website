@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken 
 from google.oauth2 import id_token 
 from google.auth.transport import requests
 from django.conf import settings
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from .serilaizers import *
 from django.contrib.auth import get_user_model
 
@@ -90,6 +90,121 @@ class SignUpForm(APIView):
                 return Response({'message': 'Email Already Taken'}, status=status.HTTP_400_BAD_REQUEST) 
         serializer  = SignUpFormSerializer(data = request.data)
         if serializer.is_valid():
-                serializer.save() 
-                return Response({'message':'Account Created Successfully'},status=status.HTTP_200_OK)
+                user = serializer.save() 
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+            
+                return Response({
+                    'access': access_token,
+                    'refresh': refresh_token,
+                    'user': {
+                        'id': user.id,
+                        'email': user.email,
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,  
+                    }
+                },status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+class AssignRole(APIView):
+         
+         permission_classes = [IsAuthenticated]
+         def post(self,request):
+            role = request.data.get('role')
+            user = request.user  # ✅ from token
+            print('user ......',user)
+            user.role = role
+            user.save()
+
+            return Response(
+            {
+                'message': 'Successfully Assigned Role'
+                
+            },
+            status=status.HTTP_200_OK
+        )
+
+              
+class GoogleLoginView(APIView):
+    def post(self, request):
+        token = request.data.get("token")
+
+        if not token:
+            return Response(
+                {"error": "Token is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            idinfo = id_token.verify_oauth2_token(
+                token,
+                requests.Request(),
+                settings.GOOGLE_OAUTH_CLIENT_ID
+            )
+        except ValueError:
+            return Response(
+                {"error": "Invalid Google token"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        email = idinfo.get("email")
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "Account not found. Please sign up first."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response(
+            {
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+                "user": {
+                    "id": user.id,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "role": user.role,
+                }
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class LoginFormView(APIView):
+     def post(self,request):
+        print(request.data)
+
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+          
+        user = authenticate(request, email=email, password=password)
+
+        if user is None:
+            return Response(
+                {"message": "Invalid email or password"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response(
+            {
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+                "user": {
+                    "id": user.id,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "role": user.role,
+                }
+            },
+            status=status.HTTP_200_OK
+        )

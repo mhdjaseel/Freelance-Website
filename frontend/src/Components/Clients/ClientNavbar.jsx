@@ -4,6 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 function ClientNavbar() {
   const navigate = useNavigate();
 
+    const HandleLogout = () =>{
+         localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        navigate('/Login')
+    }
   return (
     <header className="bg-white border-b">
       <div className="mx-auto max-w-7xl px-6 py-4 flex justify-between items-center">
@@ -35,7 +40,7 @@ function ClientNavbar() {
           </Link>
 
           <button
-            onClick={() => navigate("/")}
+            onClick={HandleLogout}
             className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
           >
             Logout

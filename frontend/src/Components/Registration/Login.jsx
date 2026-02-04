@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 function Login() {
   const navigate = useNavigate();
   const [Password, setPassword] = useState('');
@@ -10,20 +12,87 @@ function Login() {
     navigate("/Signup");
   };
 
-  const HandleLogin = (e) => {
+  const HandleLogin = async(e) => {
     e.preventDefault();
-    console.log(Email)
-    console.log(Password)
-    navigate("/ClientDashboard");
+    const details = {
+      email : Email,
+      password : Password
+    }
+    console.log(details)
+  try {
+      
+      const response = await axios.post(
+        "http://localhost:8000/api/LoginFormView/", details,
+        
+          {
+          headers:{
+            'Content-Type':'application/json'
+          }
+          }
+      );
 
-    
+      const data = response.data;
+      console.log(data);
+
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+      if (data?.user?.role === 'client'){
+        navigate('/ClientDashboard')
+      }
+      else{
+        navigate('/FreelancerDashboard')
+
+      }
+    } catch (err) {
+    const errorMessage =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong during Google login";
+
+    setError(errorMessage)
   };
+  }
 
-  useEffect(() => {
-    
-    
+  
 
-  }, []);
+  const handleSuccess = async (credentialResponse) => {
+    try {
+      const idToken = credentialResponse.credential;
+      const response = await axios.post(
+        "http://localhost:8000/api/GoogleLoginView/",
+        {
+          token: idToken,
+        },
+      );
+
+      const data = response.data;
+      console.log(data);
+
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+      if (data?.user?.role === 'client'){
+        navigate('/ClientDashboard')
+      }
+      else{
+        navigate('/FreelancerDashboard')
+
+      }
+    } catch (err) {
+
+      const errorMessage =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong during Google login";
+    console.log(errorMessage)
+
+    }
+  };
+  
+  const handleGoogleError = () => {
+    setError("Google login failed");
+  };
   return (
     <>
       <div className="min-h-screen flex items-center justify-center  px-4">
@@ -33,7 +102,7 @@ function Login() {
           </h1>
           <form className="mt-8 space-y-6" onSubmit={HandleLogin}>
             <div>
-             <p className="text-red-600">{Error}</p>
+             <p className="text-red-600 text-center">{Error}</p>
               <label
                 className="block text-sm font-medium text-gray-400"
                 htmlFor="email"
@@ -86,6 +155,25 @@ function Login() {
               Signup
             </span>
           </p>
+
+           <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+          
+          <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={handleSuccess}
+                onError={handleGoogleError}
+                theme="outline"
+                size="large"
+                width="100%"
+              />
+            </div>
         </div>
       </div>
     </>
