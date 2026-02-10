@@ -31,7 +31,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ('client', 'Client'),
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
     profile_completion = models.BooleanField(default=False)
     objects = CustomUserManager()
     

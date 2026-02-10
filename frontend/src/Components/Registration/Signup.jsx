@@ -35,6 +35,9 @@ function Signup() {
       console.log(data);
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
+      localStorage.setItem("profile_completion", data?.user?.profile_completion);
+      const profile = localStorage.getItem('profile_completion')
+      console.log('profile',profile)
       navigate("/UserRole",{state:{Details:data}});
     }
     catch (err) {
@@ -58,6 +61,9 @@ function Signup() {
 
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
+      localStorage.setItem("profile_completion", data?.user?.profile_completion);
+      const profile = localStorage.getItem('profile_completion')
+      console.log('profile',profile)
       navigate("/UserRole",{state:{Details:data}});
     } catch (err) {
       setError(err?.response?.data?.message);

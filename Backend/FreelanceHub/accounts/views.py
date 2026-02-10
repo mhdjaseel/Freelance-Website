@@ -70,6 +70,7 @@ class GoogleSignupView(APIView):
                     'first_name': user.first_name,
                     'last_name': user.last_name,
                     'picture': picture,
+                    'profile_completion':user.profile_completion
                 }
             },status=status.HTTP_200_OK)
             
@@ -103,6 +104,7 @@ class SignUpForm(APIView):
                         'email': user.email,
                         'first_name': user.first_name,
                         'last_name': user.last_name,  
+                        'profile_completion':user.profile_completion
                     }
                 },status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
@@ -170,6 +172,8 @@ class GoogleLoginView(APIView):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "role": user.role,
+                    "profile_completion":user.profile_completion
+
                 }
             },
             status=status.HTTP_200_OK
@@ -204,6 +208,7 @@ class LoginFormView(APIView):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "role": user.role,
+                    "profile_completion":user.profile_completion
                 }
             },
             status=status.HTTP_200_OK

@@ -6,7 +6,7 @@ function UserRole() {
  
     const navigate = useNavigate()
     const location = useLocation();
-  const details = location.state?.Details;
+    const details = location.state?.Details;
 
   const HandleRole = async (role) =>{
      try {
@@ -21,6 +21,7 @@ function UserRole() {
         Authorization:`Bearer ${token}`
       }
     })
+    
     console.log(response.data)
     if (role === 'client') {
       navigate('/ClientDashboard')

@@ -6,6 +6,8 @@ function FreelancerNavbar() {
    const HandleLogout = () =>{
          localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        localStorage.removeItem("profile_completion")
+
         navigate('/Login')
     }
     return (

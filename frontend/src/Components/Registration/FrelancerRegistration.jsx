@@ -1,14 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 function FrelancerRegistration() {
   const navigate = useNavigate();
+    const [previewUrl, setPreviewUrl] = useState(null);
+  const [Error, setError] = useState();
   const [Details, setDetails] = useState({
-    company_name: "",
-    company_description: "",
-    industry: "",
+    title: "",
+    bio: "",
+    skills: "",
     website: "",
+    profile_picture: null,
   });
+
+
+  const HandleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+      
+      // Validate file size (e.g., max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size should be less than 5MB');
+        return;
+      }
+
+      setDetails((prev) => ({
+        ...prev,
+        profile_picture: file,
+      }));
+
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl)
+    }
+  };
+
   const HandleChange = (e) => {
     const { name, value } = e.target;
     setDetails((prev) => ({
@@ -17,10 +47,34 @@ function FrelancerRegistration() {
     }));
   };
 
-  const HandleSubmit = (e) => {
+  const HandleSubmit = async(e) => {
     e.preventDefault();
-    navigate("/ClientDashboard");
     console.log(Details);
+    const formData = new FormData();
+  formData.append('title', Details.title);
+  formData.append('bio', Details.bio);
+  formData.append('skills', Details.skills);
+  formData.append('website', Details.website);
+if ( Details.profile_picture) {
+  formData.append("profile_picture", Details.profile_picture);
+}
+  console.log(formData)
+
+  try {
+    const token = localStorage.getItem('access_token')
+    console.log(token)
+    const response = await axios.post('http://localhost:8000/freelancer/FreelancerRegistration/', formData, {
+      headers: {
+        Authorization:`Bearer ${token}`
+      },
+    });
+    
+    console.log('Success:', response.data);
+    localStorage.setItem("profile_completion", "true");
+    navigate("/FreelancerDashboard");
+  } catch (error) {
+    console.error('Error:', error);
+  }
   };
 
   return (
@@ -33,6 +87,57 @@ function FrelancerRegistration() {
                 Freelancer Details
               </h2>
 
+              <div className="mt-8 flex flex-col items-center">
+                <label className="block text-sm font-medium text-emerald-500 mb-4">
+                   Profile Picture
+                </label>
+                
+                {previewUrl ? (
+                  <div className="relative">
+                    <img
+                      src={previewUrl}
+                      alt="Profile Preview"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-emerald-200"
+                    />
+                    
+                  </div>
+                ) : (
+                  <div className="w-32 h-32 rounded-full bg-emerald-50 border-2 border-dashed border-emerald-300 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-emerald-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                )}
+
+                <label
+                  htmlFor="profile-upload"
+                  className="mt-4 cursor-pointer inline-flex items-center px-4 py-2 border border-emerald-500 rounded-md text-sm font-medium text-emerald-500 bg-white hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  {previewUrl ? "Change Photo" : "Upload Photo"}
+                </label>
+                <input
+                  id="profile-upload"
+                  type="file"
+                  name="profile_picture"
+                  accept="image/*"
+                  onChange={HandleFileChange}
+                  className="hidden"
+                />
+                <p className="mt-2 text-xs text-gray-500">
+                  PNG, JPG, GIF up to 5MB
+                </p>
+              </div>
+
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
                   <label className="block text-sm font-medium text-emerald-500">
@@ -41,6 +146,7 @@ function FrelancerRegistration() {
                   <input
                     type="text"
                     name="title"
+                    required
                     onChange={HandleChange}
                     placeholder="Full satck developer"
                     className="mt-2 block w-full rounded-md border border-emerald-200 px-3 py-1.5 focus:outline-emerald-500"
@@ -54,6 +160,7 @@ function FrelancerRegistration() {
                   <textarea cols="20" rows="3"
                   name="bio"
                     onChange={HandleChange}
+                    required
                     className="mt-2 block w-full rounded-md border border-emerald-200 px-3 py-1.5 focus:outline-emerald-500"
                   ></textarea>
 
@@ -67,6 +174,7 @@ function FrelancerRegistration() {
                   </label>
                   <textarea cols="20" rows="3"
                   name="skills"
+                    required
                     onChange={HandleChange}
                     className="mt-2 block w-full rounded-md border border-emerald-200 px-3 py-1.5 focus:outline-emerald-500"
                   ></textarea>

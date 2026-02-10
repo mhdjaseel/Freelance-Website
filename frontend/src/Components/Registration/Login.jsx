@@ -36,6 +36,8 @@ function Login() {
 
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
+      localStorage.setItem("profile_completion", data?.user?.profile_completion);
+
       if (data?.user?.role === 'client'){
         navigate('/ClientDashboard')
       }
@@ -71,6 +73,8 @@ function Login() {
 
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
+      localStorage.setItem("profile_completion", data?.user?.profile_completion);
+
       if (data?.user?.role === 'client'){
         navigate('/ClientDashboard')
       }
@@ -86,7 +90,7 @@ function Login() {
         err.message ||
         "Something went wrong during Google login";
     console.log(errorMessage)
-
+      setError(errorMessage)
     }
   };
   

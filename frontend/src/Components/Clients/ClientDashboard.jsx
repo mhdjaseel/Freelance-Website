@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import CompletePopup from "../Registration/CompletePopup";
 import ChatInterface from "./ChatInterface";
 
 function ClientDashboard() {
-  const location =useLocation()
-  const profile = location.state?.showProfilePopup
 const [Popup, setPopup] = useState(false);
   const navigate = useNavigate();
   const handlePostJob = () => {
     navigate("/CreateJob");
-  };
-  const handleLogout = () => {
-    navigate("/");
+ 
   };
 
   useEffect(() => {
-    if(profile && profile ===true){
+
+    const profile_completion = localStorage.getItem('profile_completion')
+    console.log('client profile  ',profile_completion)
+    if(profile_completion === 'false'){
       setPopup(true)
     }
-    console.log(profile)
-  }, [profile]);
+  }, []);
   return (
     <>
 

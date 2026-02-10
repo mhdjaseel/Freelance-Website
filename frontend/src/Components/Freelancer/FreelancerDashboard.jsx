@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import FreealncerPopup from '../Registration/FreealncerPopup';
 
 function FreelancerDashboard() {
+  const [Popup, setPopup] = useState(false);
+  
+    useEffect(() => {
+      const profile_completion = localStorage.getItem('profile_completion')
+      if(profile_completion === 'false'){
+        setPopup(true)
+      }
+    }, []);
   return (
     <>
+    {Popup && <FreealncerPopup  PopupOpen = {setPopup}/>}
             <main className="mx-auto max-w-7xl px-6 py-8 ">
           <div className="flex justify-start mb-2 ">
             <button className=" rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100">
