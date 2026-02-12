@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom'
 
 function FreealncerPopup({PopupOpen}) {
     const navigate = useNavigate()
-
+  const HandleLater = () => {
+    PopupOpen(false)
+    localStorage.setItem('profile_completion',true)
+  }
     return (
     <div className="mt-2 flex  justify-center ">
       <div className="border border-emerald-400 p-6 rounded-2xl 
@@ -17,7 +20,7 @@ function FreealncerPopup({PopupOpen}) {
           <button  onClick={()=>{navigate('/FreelanceRegistration')}} className="px-4 py-2 rounded-xl bg-emerald-500 text-white">
             Complete
           </button>
-          <button onClick={()=>{PopupOpen(false)}} className="px-4 py-2 rounded-xl bg-red-600 text-white">
+          <button onClick={HandleLater} className="px-4 py-2 rounded-xl bg-red-600 text-white">
             Later
           </button>
         </div>

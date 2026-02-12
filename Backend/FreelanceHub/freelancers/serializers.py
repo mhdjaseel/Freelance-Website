@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import FreelancerProfile, Skill
+from clients.models import Job
 
 
 class FreelancerRegisterSerializer(serializers.ModelSerializer):
@@ -37,3 +38,8 @@ class FreelancerRegisterSerializer(serializers.ModelSerializer):
             freelancer.skills.add(skill)
 
         return freelancer
+
+class JoblistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'

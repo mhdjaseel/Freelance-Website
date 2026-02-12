@@ -14,7 +14,6 @@ const [Popup, setPopup] = useState(false);
   useEffect(() => {
 
     const profile_completion = localStorage.getItem('profile_completion')
-    console.log('client profile  ',profile_completion)
     if(profile_completion === 'false'){
       setPopup(true)
     }

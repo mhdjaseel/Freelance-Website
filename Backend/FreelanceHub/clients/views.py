@@ -9,8 +9,6 @@ class ClientRegistration(APIView):
     parser_classes = [MultiPartParser, FormParser]
     def post(self,request): 
         user = request.user
-        print(user)
-        print(user.profile_completion)
         
         if ClientProfile.objects.filter(user=user).exists():
             return Response(
@@ -24,6 +22,17 @@ class ClientRegistration(APIView):
             user.profile_completion = True
             user.save()
             return Response({'message':'Register Successfully'},status=status.HTTP_200_OK)
+        print(serializer.errors)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        
+class JobPost(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self,request): 
+        print(request.data)
+        serializer = JobPostSerializer(data = request.data,context={"user": request.user})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'successfully created job'})
         print(serializer.errors)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
