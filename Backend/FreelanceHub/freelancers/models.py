@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from clients.models import Job
 CustomUser = get_user_model()
 # Create your models here.
 
@@ -21,3 +21,24 @@ class FreelancerProfile(models.Model):
     skills = models.ManyToManyField(Skill, blank=True,related_name='freelancers')
     def __str__(self):
         return f"{self.user.last_name}'s Freelancer Profile"
+class Proposal(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+        ('withdrawn', 'Withdrawn'),
+    ]
+    
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='proposals')
+    freelancer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='proposals_sent')
+    cover_letter = models.TextField(blank=True)
+    proposed_amount = models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ['job', 'freelancer']  # One proposal per freelancer per job
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Proposal by {self.freelancer.email} for {self.job.title}"

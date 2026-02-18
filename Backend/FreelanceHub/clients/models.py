@@ -38,7 +38,7 @@ class Job(models.Model):
     budget_amount = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
     deadline = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:

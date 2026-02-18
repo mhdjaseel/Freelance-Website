@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 function Joblist() {
+
   const [Jobs, setJobs] = useState();
+  const navigate = useNavigate()
   useEffect(() => {
     const GetJobLists = async () => {
       try {
@@ -22,6 +27,10 @@ function Joblist() {
     };
     GetJobLists();
   }, []);
+
+  const CancelProposal =()=>{
+
+  }
   return (
     <>
       <div className="space-y-4 flex flex-col justify-center items-center">
@@ -31,13 +40,20 @@ function Joblist() {
             className="w-full max-w-5xl mt-3  bg-white rounded-lg shadow hover:shadow-md transition p-6"
           >
             <div className="flex justify-between">
-              <h1 className="text-lg font-semibold ">{job.title}</h1>
+              <div className="flex items-center">
+              <h1 className="text-lg font-semibold">{job.title} </h1>
+              {
+                job.applied &&  
+              <h1 className="text-sm ms-2 p-1 rounded-2xl font-semibold text-white bg-emerald-400">Applied </h1>
+
+              }
+              </div>
+
               <h1 className=" bg-blue-100 text-blue-800 text-xs font-medium rounded-full p-1">
-                {" "}
                 {job.category}
               </h1>
             </div>
-            <p className="text-gray-500">{job.created_at}</p>
+            <p className="text-gray-500">Posted By :{job.client.first_name} {job.client.last_name} {job.created_at}</p>
             <p className="text-gray-700">{job.description}</p>
             <p className="text-m font-semibold mt-2">Skills Required</p>
 
@@ -75,14 +91,23 @@ function Joblist() {
               <div className="sm:flex items-center mt-2 sm:space-x-3 space-y-2 ">
                 <p className="text-gray-500">6 proposals</p>
 
-                <button className="bg-blue-600 p-1 rounded-xl text-amber-50 cursor-pointer">
+                {
+                  job.applied === true ?(
+                <button onClick={CancelProposal} className="bg-emerald-600 p-1 rounded-xl text-amber-50 cursor-pointer">
+                  {job.proposal_status}
+                </button>
+                  ):
+                  <button onClick={()=>navigate('/ProposalPage',{state:{data:job}})} className="bg-blue-600 p-1 rounded-xl text-amber-50 cursor-pointer">
                   Apply
                 </button>
+                }
               </div>
             </div>
           </div>
         ))}
       </div>
+
+   
     </>
   );
 }

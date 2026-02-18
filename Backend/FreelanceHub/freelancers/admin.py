@@ -3,3 +3,4 @@ from .models import *
 # Register your models here.
 admin.site.register(FreelancerProfile)
 admin.site.register(Skill)
+admin.site.register(Proposal)
