@@ -16,6 +16,8 @@ import Joblist from "./Components/Freelancer/Jobs/Joblist";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ProposalPage from "./Components/Freelancer/ProposalPage";
 import {ToastContainer} from 'react-toastify'
+import ProjectDetails from "./Components/Clients/Project/ProjectDetails";
+
 function App() {
   return (
     <><GoogleOAuthProvider clientId="446900104176-0gq84dr63ueem055jtqbhaap4qcfmgim.apps.googleusercontent.com">
@@ -47,6 +49,8 @@ function App() {
             <Route path="/ClientRegistration" element={<ClientRegistration />} />
             <Route path="/ClientDashboard" element={<ClientDashboard />} />
             <Route path="/CreateJob" element={<CreateJob />} />
+            <Route path="/ProjectDetails" element={<ProjectDetails/>} />
+
           </Route>
 
         </Routes>

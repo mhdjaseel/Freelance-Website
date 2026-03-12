@@ -23,7 +23,9 @@ function Signup() {
   };
 
   const HandleSubmit = async (e) => {
+
     e.preventDefault();
+    
     try {
       const response = await axios.post('http://localhost:8000/api/SignUpForm/', Details, {
         headers: {
@@ -42,7 +44,7 @@ function Signup() {
     }
     catch (err) {
       setError(err?.response?.data?.message);
-      console.log(err.response.data);
+      console.log(err?.response.data);
     }
   };
 

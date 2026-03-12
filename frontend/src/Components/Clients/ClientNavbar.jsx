@@ -1,21 +1,51 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { googleLogout } from "@react-oauth/google";
 
 function ClientNavbar() {
   const navigate = useNavigate();
 
     const HandleLogout = () =>{
-         localStorage.removeItem("access_token");
+        localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("profile_completion")
+        localStorage.clear();
+
+        googleLogout()
         navigate('/Login')
     }
+
+     const [User, setUser] = useState();
+
+    useEffect(() => {
+      
+    const GetUserInfo = async(e)=>{
+      const token = localStorage.getItem("access_token");
+
+        try {
+        const response = await axios.get(
+          "http://localhost:8000/api/UserInfo/",
+          {
+            headers:{
+              Authorization : `Bearer ${token}`
+            }
+          }
+        );
+          setUser(response.data)
+          console.log(response.data)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+      GetUserInfo()
+    }, []);
   return (
     <header className="bg-white border-b">
       <div className="mx-auto max-w-7xl px-6 py-4 flex justify-between items-center">
 
         <h1 className="text-xl font-semibold text-gray-800">
-          Client Dashboard
+          {User?.first_name} {User?.last_name} 
         </h1>
 
         <nav className="flex items-center gap-4">

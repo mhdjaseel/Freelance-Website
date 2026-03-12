@@ -131,7 +131,7 @@ class AssignRole(APIView):
 class GoogleLoginView(APIView):
     def post(self, request):
         token = request.data.get("token")
-
+        print(token)
         if not token:
             return Response(
                 {"error": "Token is required"},
@@ -213,3 +213,16 @@ class LoginFormView(APIView):
             },
             status=status.HTTP_200_OK
         )
+    
+class UserInfo(APIView):
+    def get(self, request):
+        try:
+            user = request.user 
+            if not user.is_authenticated:
+                return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+
+            serializer = UserInfoSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)

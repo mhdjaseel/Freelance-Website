@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { toast } from "react-toastify";
 
@@ -10,7 +10,7 @@ function ProposalPage() {
     Job:''
   });
 
-
+  const navigate = useNavigate()
   const location = useLocation();
   const data = location?.state?.data;
 
@@ -40,6 +40,7 @@ function ProposalPage() {
           },
         );
         console.log(response.data);
+        navigate('/Joblist')
       } 
       catch (error) {
         if (error.response) {

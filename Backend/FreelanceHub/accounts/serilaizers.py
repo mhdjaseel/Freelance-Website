@@ -30,3 +30,9 @@ class SignUpFormSerializer(serializers.ModelSerializer):
 
         )
         return user
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    
+    class Meta :
+        model = CustomUser
+        fields = '__all__'

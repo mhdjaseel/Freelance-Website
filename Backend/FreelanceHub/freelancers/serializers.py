@@ -62,16 +62,19 @@ class JoblistSerializer(serializers.ModelSerializer):
 
     def get_applied(self, obj):
         user = self.context['request'].user
-        return Proposal.objects.filter(job=obj, freelancer=user).exists()
+        freelancer_profile = getattr(user, 'freelancer_profile', None)
+        if not freelancer_profile:
+            return False
+        return Proposal.objects.filter(job=obj, freelancer=freelancer_profile).exists()
 
-    def get_proposal_status(self,obj):
-        user = self.context['request'].user
-        return Proposal.objects.filter(job=obj, freelancer=user).exists()
-    
     def get_proposal_status(self, obj):
-        user = self.context['request'].user
-        proposal = Proposal.objects.filter(job=obj, freelancer=user).first()
-        return proposal.status if proposal else None
+        freelancer_profile = self.context.get('freelancer_profile', None)
+        if not freelancer_profile:
+            return None
+        proposal = Proposal.objects.filter(job=obj, freelancer=freelancer_profile).first()
+        if proposal:
+            return proposal.status  # or whatever field you want to show
+        return None
 
 class CreateProposalSerializer(serializers.ModelSerializer):
     class Meta:

@@ -7,6 +7,7 @@ function Joblist() {
 
   const [Jobs, setJobs] = useState();
   const navigate = useNavigate()
+  const [profile, setprofile] = useState(false);
   useEffect(() => {
     const GetJobLists = async () => {
       try {
@@ -26,11 +27,21 @@ function Joblist() {
       }
     };
     GetJobLists();
+     const profile_completion = localStorage.getItem('profile_completion')
+    if(profile_completion === 'true'){
+        setprofile(true)
+      }
   }, []);
 
-  const CancelProposal =()=>{
-
+  const HandleProposal = (job) =>{
+    if (!profile) {
+    toast.error("Please complete Profile First");
+    return; 
   }
+
+    navigate('/ProposalPage',{state:{data:job}})
+  }
+ 
   return (
     <>
       <div className="space-y-4 flex flex-col justify-center items-center">
@@ -92,12 +103,9 @@ function Joblist() {
                 <p className="text-gray-500">6 proposals</p>
 
                 {
-                  job.applied === true ?(
-                <button onClick={CancelProposal} className="bg-emerald-600 p-1 rounded-xl text-amber-50 cursor-pointer">
-                  {job.proposal_status}
-                </button>
-                  ):
-                  <button onClick={()=>navigate('/ProposalPage',{state:{data:job}})} className="bg-blue-600 p-1 rounded-xl text-amber-50 cursor-pointer">
+                  job.applied === false &&
+        
+                  <button onClick={() => HandleProposal(job)} className="bg-blue-600 p-1 rounded-xl text-amber-50 cursor-pointer">
                   Apply
                 </button>
                 }

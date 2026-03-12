@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import FreealncerPopup from '../Registration/FreealncerPopup';
-
+import axios from 'axios';
 function FreelancerDashboard() {
   const [Popup, setPopup] = useState(false);
-  
     useEffect(() => {
       const profile_completion = localStorage.getItem('profile_completion')
       if(profile_completion === 'false'){
         setPopup(true)
       }
+      
+
+      
     }, []);
   return (
     <>

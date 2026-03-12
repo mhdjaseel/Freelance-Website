@@ -5,5 +5,6 @@ urlpatterns = [
     path("SignUpForm/", SignUpForm.as_view(), name="SignUpForm"),
     path("AssignRole/", AssignRole.as_view(), name="AssignRole"),
     path("GoogleLoginView/", GoogleLoginView.as_view(), name="GoogleLoginView"),
-    path("LoginFormView/", LoginFormView.as_view(), name="LoginFormView")
+    path("LoginFormView/", LoginFormView.as_view(), name="LoginFormView"),
+    path("UserInfo/", UserInfo.as_view(), name="UserInfo"),
 ]
