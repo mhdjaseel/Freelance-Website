@@ -35,7 +35,8 @@ class GoogleSignupView(APIView):
             idinfo = id_token.verify_oauth2_token(
                 token, 
                 requests.Request(), 
-                settings.GOOGLE_OAUTH_CLIENT_ID
+                settings.GOOGLE_OAUTH_CLIENT_ID,
+                clock_skew_in_seconds=10
             )
 
             email = idinfo.get('email')
@@ -142,9 +143,11 @@ class GoogleLoginView(APIView):
             idinfo = id_token.verify_oauth2_token(
                 token,
                 requests.Request(),
-                settings.GOOGLE_OAUTH_CLIENT_ID
+                settings.GOOGLE_OAUTH_CLIENT_ID,
+                clock_skew_in_seconds=10
             )
-        except ValueError:
+        except Exception as e:
+            print("GOOGLE VERIFY ERROR:", str(e))
             return Response(
                 {"error": "Invalid Google token"},
                 status=status.HTTP_401_UNAUTHORIZED

@@ -46,3 +46,25 @@ class Job(models.Model):
     
     def __str__(self):
         return f"{self.title} - {self.client.email}"
+
+class Project(models.Model):
+    STATUS_CHOICES = [
+        ('active', 'Active'),
+        ('submitted', 'Submitted for Review'),
+        ('revision', 'Needs Revision'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    PAYMENT_CHOICES = [
+        ('paid', 'Paid'),
+        ('unpaid', 'Unpaid')
+    ]
+    job = models.OneToOneField(Job, on_delete=models.CASCADE, related_name='project')
+    proposal = models.OneToOneField("freelancers.Proposal", on_delete=models.CASCADE, related_name='project')
+    freelancer = models.ForeignKey("freelancers.FreelancerProfile", on_delete=models.CASCADE, related_name='projects_working')
+    client = models.ForeignKey(ClientProfile, on_delete=models.CASCADE, related_name='projects_hired')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+    completion_date = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"Project: {self.job.title}"

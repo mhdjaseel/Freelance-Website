@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ClientProfile,Job
+from .models import ClientProfile,Job,Project
 from django.contrib.auth import get_user_model
 from freelancers.models import Proposal,FreelancerProfile,Skill
 from accounts.serilaizers import UserInfoSerializer
@@ -61,4 +61,18 @@ class ProposalSerializer(serializers.ModelSerializer):
     freelancer = FreelancerSeriliazer()
     class Meta:
         model = Proposal
+        fields = '__all__'
+    
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+class ProjectDetailsSerializer(serializers.ModelSerializer):
+    job = JoblistSerializer()
+    client = ClientProfileSerializer()
+    freelancer = FreelancerSeriliazer()
+    proposal = ProposalSerializer()
+    class Meta:
+        model = Project
         fields = '__all__'

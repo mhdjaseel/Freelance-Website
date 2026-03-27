@@ -4,3 +4,5 @@ from .models import *
 
 admin.site.register(ClientProfile)
 admin.site.register(Job)
+admin.site.register(Project)
+

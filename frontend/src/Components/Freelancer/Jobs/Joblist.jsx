@@ -46,7 +46,9 @@ function Joblist() {
     <>
       <div className="space-y-4 flex flex-col justify-center items-center">
         {Jobs?.map((job) => (
-          <div
+          (
+            job.status ==='open' && job.applied === false ?(
+            <div
             key={job.id}
             className="w-full max-w-5xl mt-3  bg-white rounded-lg shadow hover:shadow-md transition p-6"
           >
@@ -112,7 +114,15 @@ function Joblist() {
               </div>
             </div>
           </div>
+            
+        ):
+        (
+         null
+        )
+
+      )
         ))}
+
       </div>
 
    

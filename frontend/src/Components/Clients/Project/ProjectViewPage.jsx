@@ -2,9 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
 import { useLocation, useNavigate } from 'react-router-dom'
-function ProjectViewPage({type}) {
+function ProjectViewPage({type ,counts}) {
     const [Jobs, setJobs] = useState();
+    
+  
     const navigate = useNavigate()
+    
 useEffect(() => {
     
    const GetJobLists = async () => {
@@ -18,8 +21,8 @@ useEffect(() => {
             },
           },
         );
-        console.log(response.data);
         setJobs(response.data);
+        counts(response.data)
       } catch (error) {
         console.log(error);
       }
@@ -50,10 +53,11 @@ useEffect(() => {
     Jobs?.active_projects?.map((job) => (
       <div key={job.id} className="flex items-center justify-between border-b py-4 last:border-b-0">
         <div>
-          <p className="font-medium text-gray-800">{job.title}</p>
+          <p className="font-medium text-gray-800">{job.title} <span className="ms-3 rounded-full bg-emerald-400 p-1 text-sm text-white">{job.status}</span></p>
           <p className="text-sm text-gray-500">Freelancer: {job.client.first_name} {job.client.last_name}</p>
         </div>
-        <button onClick={()=>{navigate('/ProjectDetails ',{state:{job:job}})}} className="rounded-full bg-blue-500 px-3 py-1 text-sm text-white">
+        
+        <button onClick={()=>{navigate('/ActiveProjectPage ',{state:{job:job}})}} className="rounded-full bg-blue-500 px-3 py-1 text-sm text-white">
           Details
         </button>
       </div>

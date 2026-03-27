@@ -7,12 +7,17 @@ import ProjectViewPage from "./Project/ProjectViewPage";
 
 function ClientDashboard() {
   const [Type, setType] = useState('in_progress');
+  const [Count, setCount] = useState(null);
 const [Popup, setPopup] = useState(false);
   const navigate = useNavigate();
   const handlePostJob = () => {
     navigate("/CreateJob");
  
   };
+
+  const handleChildData = (data) =>{
+    setCount(data)
+  }
 
   useEffect(() => {
 
@@ -51,7 +56,7 @@ const [Popup, setPopup] = useState(false);
     onClick={() => setType("in_progress")}
   >
     <p className="text-sm text-gray-500">Active Projects</p>
-    <p className="mt-2 text-2xl font-semibold text-gray-800">1</p>
+    <p className="mt-2 text-2xl font-semibold text-gray-800">{Count?.active_count || 0}</p>
   </div>
 
   <div
@@ -61,7 +66,7 @@ const [Popup, setPopup] = useState(false);
     onClick={() => setType("open")}
   >
     <p className="text-sm text-gray-500">Open Projects</p>
-    <p className="mt-2 text-2xl font-semibold text-gray-800">1</p>
+    <p className="mt-2 text-2xl font-semibold text-gray-800">{Count?.open_count || 0}</p>
   </div>
 
   <div
@@ -71,11 +76,11 @@ const [Popup, setPopup] = useState(false);
     onClick={() => setType("completed")}
   >
     <p className="text-sm text-gray-500">Completed Projects</p>
-    <p className="mt-2 text-2xl font-semibold text-gray-800">1</p>
+    <p className="mt-2 text-2xl font-semibold text-gray-800">{Count?.completed_count || 0}</p>
   </div>
 </div>
 
-          <ProjectViewPage type = {Type}/>
+          <ProjectViewPage type = {Type} counts = {handleChildData}/>
         </main>
       
           

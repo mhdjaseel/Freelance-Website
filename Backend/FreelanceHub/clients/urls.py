@@ -4,7 +4,9 @@ urlpatterns = [
     path("ClientRegistration/", ClientRegistration.as_view(), name="ClientRegistration"),
     path("JobPost/", JobPost.as_view(), name="JobPost"),
     path("Projectlist/", Projectlist.as_view(), name="Projectlist"),
-    path("ProposalList/<int:id>/", ProposalList.as_view(), name="ProposalList")
+    path("ProposalList/<int:id>/", ProposalList.as_view(), name="ProposalList"),
+    path("CreateProject/", CreateProject.as_view(), name="CreateProject"),
+    path("ProjectData/<int:id>/", ProjectData.as_view(), name="ProjectData")
 
 
 ]

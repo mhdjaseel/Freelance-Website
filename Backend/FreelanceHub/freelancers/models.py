@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from clients.models import Job
 CustomUser = get_user_model()
 # Create your models here.
 
@@ -31,7 +30,7 @@ class Proposal(models.Model):
         ('withdrawn', 'Withdrawn'),
     ]
     
-    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='proposals')
+    job = models.ForeignKey("clients.Job", on_delete=models.CASCADE, related_name='proposals')
     freelancer = models.ForeignKey(FreelancerProfile, on_delete=models.CASCADE, related_name='proposals_sent')
     cover_letter = models.TextField(blank=True)
     proposed_amount = models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
@@ -43,4 +42,4 @@ class Proposal(models.Model):
         ordering = ['-created_at']
     
     def __str__(self):
-        return f"Proposal by {self.freelancer.email} for {self.job.title}"
+        return f"Proposal by {self.freelancer.user.first_name} for {self.job.title}"

@@ -17,6 +17,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import ProposalPage from "./Components/Freelancer/ProposalPage";
 import {ToastContainer} from 'react-toastify'
 import ProjectDetails from "./Components/Clients/Project/ProjectDetails";
+import FreelancerProfileView from "./Components/Clients/Project/FreelancerProfileView";
+import ActiveProjectPage from "./Components/Clients/Project/ActiveProjectPage";
 
 function App() {
   return (
@@ -50,6 +52,8 @@ function App() {
             <Route path="/ClientDashboard" element={<ClientDashboard />} />
             <Route path="/CreateJob" element={<CreateJob />} />
             <Route path="/ProjectDetails" element={<ProjectDetails/>} />
+            <Route path="/FreelancerProfileView" element={<FreelancerProfileView/>} />
+            <Route path="/ActiveProjectPage" element={<ActiveProjectPage/>} />
 
           </Route>
 

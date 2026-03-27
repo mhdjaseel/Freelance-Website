@@ -55,6 +55,7 @@ class JoblistSerializer(serializers.ModelSerializer):
     applied = serializers.SerializerMethodField()
     proposal_status = serializers.SerializerMethodField()
     client = ClientDetailSerializer()
+    #proposal_count = serializers.SerializerMethodField()
     class Meta:
         model = Job
         fields = '__all__'
@@ -75,6 +76,9 @@ class JoblistSerializer(serializers.ModelSerializer):
         if proposal:
             return proposal.status  # or whatever field you want to show
         return None
+    
+   
+
 
 class CreateProposalSerializer(serializers.ModelSerializer):
     class Meta:

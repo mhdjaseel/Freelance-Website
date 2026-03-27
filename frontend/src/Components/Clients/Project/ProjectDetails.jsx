@@ -1,32 +1,37 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ProjectDetails() {
   const location = useLocation();
-  const data = location?.state?.job;
+  const data = location?.state?.job || null
   const [view, setView] = useState(false);
   const [proposals, setProposals] = useState([]);
-
+  const navigate = useNavigate()
   useEffect(() => {
-    const GetProposalLists = async () => {
-      try {
-        const token = localStorage.getItem("access_token");
-        const response = await axios.get(
-          `http://localhost:8000/client/ProposalList/${data.id}/`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log(response.data)
-        setProposals(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    GetProposalLists();
-  }, [data.id]);
+  if (!data) return;
 
+  const GetProposalLists = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+
+      const response = await axios.get(
+        `http://localhost:8000/client/ProposalList/${data.id}/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(response.data)
+      setProposals(response.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  GetProposalLists();
+
+}, [data]);
   return (
     <div className="min-h-screen bg-white flex flex-col items-center p-6 space-y-6">
       {/* Project Details Card */}
@@ -104,15 +109,15 @@ function ProjectDetails() {
                 proposals.map((proposal, index) => (
                   <tr key={index} className="bg-white text-emerald-500">
                     <td className="px-6 py-3 border border-emerald-500">
-                       <img src={`http://localhost:8000${proposal.freelancer.profile_picture}`}  className="w-15 h-15 rounded-full object-cover"
-/>
+                      {proposal.freelancer.user.first_name} {proposal.freelancer.user.last_name}
 
                     </td>
                     <td className="px-6 py-3 border border-emerald-500">
-                      {proposal.freelancer.user.first_name} {proposal.freelancer.user.last_name}
+                       {proposal.freelancer.title}
+
                     </td>
                     <td className="px-6 py-3 border border-emerald-500 text-center">
-                      <button className="bg-emerald-500 text-white font-medium px-4 py-2 rounded hover:bg-emerald-600 transition">
+                      <button onClick={()=>{navigate('/FreelancerProfileView',{state :{proposal:proposal}})}} className="bg-emerald-500 text-white font-medium px-4 py-2 rounded hover:bg-emerald-600 transition">
                         View Profile
                       </button>
                     </td>
