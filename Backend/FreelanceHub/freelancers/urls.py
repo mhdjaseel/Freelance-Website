@@ -3,7 +3,9 @@ from .views import *
 urlpatterns = [
     path("FreelancerRegistration/", FreelancerRegistration.as_view(), name="FreelancerRegistration"),
     path("Joblist/", Joblist.as_view(), name="Joblist"),
-    path("CreateProposal/", CreateProposal.as_view(), name="CreateProposal")
+    path("CreateProposal/", CreateProposal.as_view(), name="CreateProposal"),
+    path("Projectlist/", Projectlist.as_view(), name="Projectlist")
+
 
 
 ]

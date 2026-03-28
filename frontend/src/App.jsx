@@ -19,6 +19,8 @@ import {ToastContainer} from 'react-toastify'
 import ProjectDetails from "./Components/Clients/Project/ProjectDetails";
 import FreelancerProfileView from "./Components/Clients/Project/FreelancerProfileView";
 import ActiveProjectPage from "./Components/Clients/Project/ActiveProjectPage";
+import ProjectsViews from "./Components/Freelancer/Projects/ProjectsViews";
+import FreelancerProjectDetails from "./Components/Freelancer/Projects/FreelancerProjectDetails";
 
 function App() {
   return (
@@ -43,6 +45,10 @@ function App() {
               <Route path="/FreelancerDashboard" element={<FreelancerDashboard />} />
               <Route path="/Joblist" element={<Joblist/>} />
               <Route path="/ProposalPage" element={<ProposalPage/>} />
+              <Route path="/ProjectsViews" element={<ProjectsViews/>} />
+              <Route path="/FreelancerProjectDetails" element={<FreelancerProjectDetails/>} />
+
+
 
           </Route>
 

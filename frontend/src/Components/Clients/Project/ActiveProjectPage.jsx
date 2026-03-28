@@ -61,14 +61,16 @@ const GetProjectData = async() =>{
           <div>
             <p className="text-sm text-gray-500 mb-2">Skills Required</p>
             <div className="flex flex-wrap gap-2">
-              {ProjectData?.freelancer?.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
-                >
-                  {skill.name}
-                </span>
-              ))}
+              {ProjectData?.job?.skills_required
+                  ?.split(",")
+                  .map((skill, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
+                    >
+                      {skill}
+                    </span>
+                  ))}
             </div>
           </div>
           <div>

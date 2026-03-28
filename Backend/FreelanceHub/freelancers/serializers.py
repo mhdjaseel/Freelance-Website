@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import FreelancerProfile, Skill,Proposal
-from clients.models import Job,ClientProfile
+from clients.models import Job,ClientProfile,Project
 from django.contrib.auth import get_user_model
+from accounts.serilaizers import UserInfoSerializer
 
 CustomUser = get_user_model()
 
@@ -77,7 +78,6 @@ class JoblistSerializer(serializers.ModelSerializer):
             return proposal.status  # or whatever field you want to show
         return None
     
-   
 
 
 class CreateProposalSerializer(serializers.ModelSerializer):
@@ -91,3 +91,30 @@ class CreateProposalSerializer(serializers.ModelSerializer):
         freelancer = self.context['user']
         proposal = Proposal.objects.create(job = Job, freelancer = freelancer,**validated_data)
         return proposal
+    
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = '__all__'
+class FreelancerSeriliazer(serializers.ModelSerializer):
+    skills = SkillSerializer(many=True, read_only=True)
+    user = UserInfoSerializer()
+    class Meta:
+        model = FreelancerProfile
+        fields = '__all__'
+    
+class ProposalSerializer(serializers.ModelSerializer):
+    job = JoblistSerializer()
+    freelancer = FreelancerSeriliazer()
+    class Meta:
+        model = Proposal
+        fields = '__all__'
+
+class ProjectSerializer(serializers.ModelSerializer):
+    job = JoblistSerializer()
+    client = ClientProfileSerializer()
+    freelancer = FreelancerSeriliazer()
+    proposal = ProposalSerializer()
+    class Meta:
+        model = Project
+        fields = '__all__'

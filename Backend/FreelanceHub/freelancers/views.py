@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from .serializers import *
-from clients.models import Job
+from clients.models import Job,Project
 
 class FreelancerRegistration(APIView):
     parser_classes = [MultiPartParser, FormParser]
@@ -59,3 +59,25 @@ class CreateProposal(APIView):
             return Response({'message':'Successfully created'},status=status.HTTP_201_CREATED)
         print(serializer.errors)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class Projectlist(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request):
+      user = FreelancerProfile.objects.get(user__email = request.user)
+      print(user)
+      active_projects = Project.objects.filter(freelancer = user,status = 'active')
+      completed_projects = Project.objects.filter(freelancer = user,status = 'completed')
+      review_projects = Project.objects.filter(freelancer = user,status = 'submitted')
+      active = Project.objects.filter(freelancer = user,status = 'active').count()
+      completed = Project.objects.filter(freelancer = user,status = 'completed').count()
+      review = Project.objects.filter(freelancer = user,status = 'submitted').count()
+      data = {
+          'active_projects':ProjectSerializer(active_projects,many = True,context={'request': request}).data,
+          'completed_projects':ProjectSerializer(completed_projects,many = True,context={'request': request}).data,
+          'review_projects':ProjectSerializer(review_projects,many = True,context={'request': request}).data,
+          'active_count': active,
+          'completed_count':completed,
+          'review_count':review
+
+      }
+      return Response(data,status=status.HTTP_200_OK)
